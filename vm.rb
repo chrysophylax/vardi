@@ -6,10 +6,10 @@ class VirtualMachine
   
   def initialize()
     @instructions = Array.new
+    @returns = Array.new
     @stack = Array.new
     @stack.push(0)
     @isp = 0
-    @sp = 0
     @debug = false
     @running = false
   end
