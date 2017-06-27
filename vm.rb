@@ -103,7 +103,12 @@ class VirtualMachine
         
       when Bytecode::CRAY
       #TODO: Malbolge crazy operator
-        
+      
+      when Bytecode::JVM
+        if @debug then puts "COFFEETIME" end
+        duration = fetch()
+        sleep(duration)
+          
       when Bytecode::EXIT
         if @debug then puts "EXIT" end
         @running = false
