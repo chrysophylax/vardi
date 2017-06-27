@@ -1,5 +1,11 @@
 # vārdi
 
-vārdi ('words' in Latvian) is a 0-operand stack-based virtual machine using an 8-bit opcode format.
+vārdi ('words' in Latvian) is a 0-operand stack-based virtual machine using an 8-bit opcode format. I haven't used Ruby much lately so this will do as a bit of practice.
 
 I know so very little about this so I thought it'd be a fun exercise.
+
+run 
+* Download the project using git clone
+* chmod +x vm.rb
+* ./vm.rb helloworld.ex
+
