@@ -20,7 +20,6 @@ class VirtualMachine
   end
   
   def step
-    if @debug then puts "Stepping" end
       @isp +=1
   end
 
@@ -36,11 +35,10 @@ class VirtualMachine
       instr = fetch()
 
       #decode
-     if @debug then  puts instr end
       case instr
       when Bytecode::NOP
         if @debug then puts "NOP" end
-
+        
       when Bytecode::PEEK
         if @debug then puts "PEEK" end
         puts @stack.peek.to_s
@@ -75,39 +73,44 @@ class VirtualMachine
         @stack.push(last).push(older)
 
       when Bytecode::DEC
+        if @debug then puts "DEPRECATED: DEC" end
         a = @stack.pop()
         @stack.push(a-1)
-
+        
       when Bytecode::ADD
+        if @debug then puts "ADD" end
         a = @stack.pop()
         b = @stack.pop()
         @stack.push(b+a)
-
+        
       when Bytecode::SUB
+        if @debug then puts "SUB" end
         a = @stack.pop()
         b = @stack.pop()
         @stack.push(b-a)
-
+        
       when Bytecode::MUL
+        if @debug then puts "MUL" end
         a = @stack.pop()
         b = @stack.pop()
         @stack.push(b*a)
-
+        
       when Bytecode::DIV
+        if @debug then puts "DIV" end 
         a = @stack.pop()
         b = @stack.pop()
         @stack.push(b/a)
-
+        
       when Bytecode::CRAY
-        #TODO: Malbolge crazy operator
-
+      #TODO: Malbolge crazy operator
+        
       when Bytecode::EXIT
         if @debug then puts "EXIT" end
         @running = false
 
       else
         #curse programmer in hex
-        puts "Error on instruction #{instr.to_s(16)}"
+        puts "Could not understand  #{@isp}: instr. was #{instr.to_s(16)}."
         @running = false
       end
 
