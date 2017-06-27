@@ -40,54 +40,74 @@ class VirtualMachine
       case instr
       when Bytecode::NOP
         if @debug then puts "NOP" end
+
       when Bytecode::PEEK
         if @debug then puts "PEEK" end
         puts @stack.peek.to_s
+
       when Bytecode::PRINT
         if @debug then puts "PRINT" end
         print @stack.pop.to_s
+
       when Bytecode::CONS
         if @debug then puts "CONS" end
         a = fetch()
         @stack.push(a)
+
       when Bytecode::POP
         if @debug then puts "POP" end
         @stack.pop()
+
       when Bytecode::JMP
+        if @debug then puts "JMP" end
+        addr = fetch()
+        @isp = addr
+        
       when Bytecode::TEXT
         if @debug then puts "TEXT" end
         print @stack.pop.chr
         $stdout.flush()
+
       when Bytecode::SWAP
         if @debug then puts "SWAP" end
         last = @stack.pop()
         older = @stack.pop()
         @stack.push(last).push(older)
+
       when Bytecode::DEC
         a = @stack.pop()
         @stack.push(a-1)
+
       when Bytecode::ADD
         a = @stack.pop()
         b = @stack.pop()
-        @stack.push(a+b)
+        @stack.push(b+a)
+
       when Bytecode::SUB
         a = @stack.pop()
         b = @stack.pop()
         @stack.push(b-a)
+
       when Bytecode::MUL
         a = @stack.pop()
         b = @stack.pop()
-        @stack.push(a*b)
+        @stack.push(b*a)
+
       when Bytecode::DIV
         a = @stack.pop()
         b = @stack.pop()
         @stack.push(b/a)
+
       when Bytecode::CRAY
+        #TODO: Malbolge crazy operator
+
       when Bytecode::EXIT
         if @debug then puts "EXIT" end
         @running = false
+
       else
-        puts "Error on instruction #{instr.to_s(2)}"
+        #curse programmer in hex
+        puts "Error on instruction #{instr.to_s(16)}"
         @running = false
       end
 
