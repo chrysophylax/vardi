@@ -10,6 +10,7 @@ module Bytecode
   RET = 255   # 0xFF return 
   CALL = 202  # 0xCA call subroutine
   JIZ = 31    # 0x1F jump 1f zero to immed 
+  JVM = 254   # 0xFE enter java mode: pause execution for IMMED seconds
   
   #stack effects
   SWAP = 2    # 0x02 switcharoo
