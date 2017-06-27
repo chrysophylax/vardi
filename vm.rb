@@ -112,7 +112,20 @@ class VirtualMachine
       when Bytecode::EXIT
         if @debug then puts "EXIT" end
         @running = false
-
+      
+      when Bytecode::RET
+        if @debug then puts "RET" end
+        addr = returns.pop()
+        @isp = addr
+          
+      when Bytecode::CALL
+        if @debug then puts "CALL" end
+        current = @isp
+        returns.push(current)
+        addr = fetch()
+        @isp = addr
+            
+        end
       else
         #curse programmer in hex
         puts "Could not understand  #{@isp}: instr. was #{instr.to_s(16)}."
