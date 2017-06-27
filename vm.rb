@@ -41,7 +41,7 @@ class VirtualMachine
         
       when Bytecode::PEEK
         if @debug then puts "PEEK" end
-        puts @stack.peek.to_s
+        puts @stack.last.to_s
 
       when Bytecode::PRINT
         if @debug then puts "PRINT" end
