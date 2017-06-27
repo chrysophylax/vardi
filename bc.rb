@@ -13,7 +13,7 @@ module Bytecode
   POP = 5 # ciao
   ADD = 6 # sum top two
   SUB = 8 # sub top two
-  MUL = 10 # ...
+  MUL = 11 # ...
   DIV = 12 # ..
   PRINT = 14 # print int->to_s
   TEXT = 10 # print int as char
