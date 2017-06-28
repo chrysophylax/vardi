@@ -76,12 +76,22 @@ class VirtualMachine
         older = @stack.pop()
         @stack.push(last).push(older)
 
+      when Bytecode::DUP
+        if @debug then puts "\tDUP" end
+        @stack.push(@stack.last)
+        
       when Bytecode::RSWP
         if @debug then puts "\tRSWP" end
         addr = @returns.pop()
         val = @stack.pop()
         @returns.push(val)
         @stack.push(addr)
+
+      when Bytecode::ISWP
+        if @debug then puts "\tISWP.*0x#{@instructions[@isp].to_s(16)}<-0x#{@stack.last.to_s(16)}" end
+        instr = @instructions[@isp]
+        val = @stack.pop()
+        @instructions[@isp] = val
         
       when Bytecode::DEC
         if @debug then puts "\tDEPRECATED: DEC" end
