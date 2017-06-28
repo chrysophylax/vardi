@@ -13,7 +13,6 @@ class VirtualMachine
     @debug = false
     @running = false
   end
-
   
   def pretty_print_instructions
     puts "\t\t --- instructions --- \n" + @instructions.to_s
@@ -37,66 +36,78 @@ class VirtualMachine
       #decode
       case instr
       when Bytecode::NOP
-        if @debug then puts "NOP" end
+        if @debug then puts "\tNOP" end
         
       when Bytecode::PEEK
-        if @debug then puts "PEEK" end
+        if @debug then puts "\tPEEK" end
         puts @stack.last.to_s
 
       when Bytecode::PRINT
-        if @debug then puts "PRINT" end
+        if @debug then puts "\tPRINT.#{@stack.last.to_s}" end
         print @stack.pop.to_s
 
       when Bytecode::CONS
-        if @debug then puts "CONS" end
+        if @debug then puts "\tCONS" end
         a = fetch()
         @stack.push(a)
 
       when Bytecode::POP
-        if @debug then puts "POP" end
+        if @debug then puts "\tPOP" end
         @stack.pop()
-
+        
       when Bytecode::JMP
-        if @debug then puts "JMP" end
+        if @debug then puts "\tJMP" end
         addr = fetch()
+        @isp = addr
+
+      when Bytecode::JMS
+        if @debug then puts "\tJMS" end
+        addr = @stack.pop()
         @isp = addr
         
       when Bytecode::TEXT
-        if @debug then puts "TEXT" end
+        if @debug then puts "\tTEXT.#{@stack.last.chr}" end
         print @stack.pop.chr
         $stdout.flush()
 
       when Bytecode::SWAP
-        if @debug then puts "SWAP" end
+        if @debug then puts "\tSWAP" end
         last = @stack.pop()
         older = @stack.pop()
         @stack.push(last).push(older)
 
+      when Bytecode::RSWP
+        if @debug then puts "\tRSWP" end
+        addr = @returns.pop()
+        val = @stack.pop()
+        @returns.push(val)
+        @stack.push(addr)
+        
       when Bytecode::DEC
-        if @debug then puts "DEPRECATED: DEC" end
+        if @debug then puts "\tDEPRECATED: DEC" end
         a = @stack.pop()
         @stack.push(a-1)
         
       when Bytecode::ADD
-        if @debug then puts "ADD" end
+        if @debug then puts "\tADD" end
         a = @stack.pop()
         b = @stack.pop()
         @stack.push(b+a)
         
       when Bytecode::SUB
-        if @debug then puts "SUB" end
+        if @debug then puts "\tSUB" end
         a = @stack.pop()
         b = @stack.pop()
         @stack.push(b-a)
         
       when Bytecode::MUL
-        if @debug then puts "MUL" end
+        if @debug then puts "\tMUL" end
         a = @stack.pop()
         b = @stack.pop()
         @stack.push(b*a)
         
       when Bytecode::DIV
-        if @debug then puts "DIV" end 
+        if @debug then puts "\tDIV" end 
         a = @stack.pop()
         b = @stack.pop()
         @stack.push(b/a)
@@ -105,26 +116,33 @@ class VirtualMachine
       #TODO: Malbolge crazy operator
       
       when Bytecode::JVM
-        if @debug then puts "COFFEETIME" end
+        if @debug then puts "\t***COFFEETIME***" end
         duration = fetch()
         sleep(duration)
           
       when Bytecode::EXIT
-        if @debug then puts "EXIT" end
+        if @debug then puts "\tEXIT" end
         @running = false
       
       when Bytecode::RET
-        if @debug then puts "RET" end
+        if @debug then puts "\tRET.0x#{@returns.last.to_s(16)}" end
         addr = @returns.pop()
         @isp = addr
           
       when Bytecode::CALL
-        if @debug then puts "CALL" end
+        if @debug then puts "\tCALL.*0x#{@instructions[@isp].to_s(16)}<-0x#{(@isp-1).to_s(16)}" end
         addr = fetch()
         current = @isp
         @isp = addr
         @returns.push(current)
-            
+        
+       when Bytecode::CLS
+        if @debug then puts "\tCLS.*0x#{@stack.last.to_s(16)}<-0x#{(@isp-1).to_s(16)}" end
+        @returns.push(@isp)
+        addr = @stack.pop()
+        @isp = addr
+ 
+        
       else
         #curse programmer in hex
         puts "Could not understand  #{@isp}: instr. was #{instr.to_s(16)}."
@@ -155,7 +173,7 @@ class VirtualMachine
   end
 
   def print_stats()
-    puts "Program length: #{@instructions.length} instructions"
+    puts "Program length: #{@instructions.length} instructions. Executed #{@isp}"
   end
   def start
     set_flags
