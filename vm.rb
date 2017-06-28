@@ -64,6 +64,14 @@ class VirtualMachine
         if @debug then puts "\tJMS" end
         addr = @stack.pop()
         @isp = addr
+
+      when Bytecode::JIZ
+        if @debug then puts "\tJIZ" end
+        v = @stack.pop()
+        if v == 0
+          addr = fetch()
+          @isp = addr
+        end
         
       when Bytecode::TEXT
         if @debug then puts "\tTEXT.#{@stack.last.chr}" end
