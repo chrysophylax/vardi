@@ -6,6 +6,7 @@ class VirtualMachine
   
   def initialize()
     @instructions = Array.new
+    @memory = Array.new(256*256)
     @returns = Array.new
     @stack = Array.new
     @stack.push(0)
@@ -154,12 +155,27 @@ class VirtualMachine
         @isp = addr
         @returns.push(current)
         
-       when Bytecode::CLS
+      when Bytecode::CLS
         if @debug then puts "\tCLS.*0x#{@stack.last.to_s(16)}<-0x#{(@isp-1).to_s(16)}" end
         @returns.push(@isp)
         addr = @stack.pop()
         @isp = addr
- 
+        
+      when Bytecode::LOAD
+        if @debug then puts "\tLOAD" end
+        upper = @stack.pop().to_s(16)
+        lower = @stack.pop().to_s(16)
+        addr = (upper + lower).to_i(16)
+        value = @stack.pop()
+        @memory[addr] = value
+        
+      when Bytecode::FETCH
+        if @debug then puts "\tFETCH" end
+        upper = @stack.pop().to_s(16)
+        lower = @stack.pop().to_s(16)
+        addr = (upper + lower).to_i(16)
+        value = @memory[addr]
+        @stack.push(value)
         
       else
         #curse programmer in hex
