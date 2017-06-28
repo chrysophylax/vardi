@@ -115,15 +115,15 @@ class VirtualMachine
       
       when Bytecode::RET
         if @debug then puts "RET" end
-        addr = returns.pop()
+        addr = @returns.pop()
         @isp = addr
           
       when Bytecode::CALL
         if @debug then puts "CALL" end
-        current = @isp
-        returns.push(current)
         addr = fetch()
+        current = @isp
         @isp = addr
+        @returns.push(current)
             
       else
         #curse programmer in hex
