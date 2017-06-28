@@ -125,7 +125,6 @@ class VirtualMachine
         addr = fetch()
         @isp = addr
             
-        end
       else
         #curse programmer in hex
         puts "Could not understand  #{@isp}: instr. was #{instr.to_s(16)}."
@@ -139,8 +138,7 @@ class VirtualMachine
     end
     
   end
-
-
+  
   def set_flags
     if ARGV[1].to_s == "d"
       @debug = true
