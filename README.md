@@ -7,5 +7,12 @@ I know so very little about this so I thought it'd be a fun exercise.
 run 
 * Download the project using git clone
 * chmod +x vm.rb
-* ./vm.rb helloworld.ex
+* ./vm.rb examples/helloworld.ex
 
+
+examples/
+ * helloworld.ex - _the_ classic
+ * iswp.ex - demonstration of swap
+ * calls.ex - demonstration of calls
+ * loop.ex - a simple loop
+ * memory.ex - how to use the built-in memory (IN PROGRESS)
