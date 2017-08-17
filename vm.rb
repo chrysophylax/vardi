@@ -1,5 +1,6 @@
 #!/usr/bin/env ruby
 require "./bc"
+require "./m"
 
 class VirtualMachine
 
