@@ -16,3 +16,4 @@ examples/
  * calls.ex - demonstration of calls
  * loop.ex - a simple loop
  * memory.ex - how to use the built-in memory (IN PROGRESS)
+ * while_loop.ex - a while loop
