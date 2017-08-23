@@ -7,7 +7,7 @@ class VirtualMachine
   
   def initialize()
     @instructions = Array.new
-    @memory = Array.new(256*256)
+    @memory = Memory.new
     @returns = Array.new
     @stack = Array.new
     @stack.push(0)
@@ -168,14 +168,14 @@ class VirtualMachine
         lower = @stack.pop().to_s(16)
         addr = (upper + lower).to_i(16)
         value = @stack.pop()
-        @memory[addr] = value
+        @memory.load(addr,value)
         
       when Bytecode::FETCH
         if @debug then puts "\tFETCH" end
         upper = @stack.pop().to_s(16)
         lower = @stack.pop().to_s(16)
         addr = (upper + lower).to_i(16)
-        value = @memory[addr]
+        value = @memory.fetch(addr)
         @stack.push(value)
         
       else
