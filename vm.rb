@@ -1,12 +1,13 @@
 #!/usr/bin/env ruby
 require "./bc"
+require "./m"
 
 class VirtualMachine
 
   
   def initialize()
     @instructions = Array.new
-    @memory = Array.new(256*256)
+    @memory = Memory.new
     @returns = Array.new
     @stack = Array.new
     @stack.push(0)
@@ -100,6 +101,7 @@ class VirtualMachine
         if @debug then puts "\tISWP.*0x#{@instructions[@isp].to_s(16)}<-0x#{@stack.last.to_s(16)}" end
         instr = @instructions[@isp]
         val = @stack.pop()
+        @stack.push(instr)
         @instructions[@isp] = val
         
       when Bytecode::DEC
@@ -167,14 +169,14 @@ class VirtualMachine
         lower = @stack.pop().to_s(16)
         addr = (upper + lower).to_i(16)
         value = @stack.pop()
-        @memory[addr] = value
+        @memory.load(addr,value)
         
       when Bytecode::FETCH
         if @debug then puts "\tFETCH" end
         upper = @stack.pop().to_s(16)
         lower = @stack.pop().to_s(16)
         addr = (upper + lower).to_i(16)
-        value = @memory[addr]
+        value = @memory.fetch(addr)
         @stack.push(value)
         
       else
