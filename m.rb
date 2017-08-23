@@ -8,7 +8,7 @@ class Memory
     
     # 64K addr space, 8 bit data size
     if (addr < 0 || addr > 65536) then puts "\tMEMIAD" end
-    if (data > 255) then puts "\tMEMISD" end
+    if data > 255 then puts "\tMEMISD" end
   
     @memory[addr] = data   
   end

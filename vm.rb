@@ -69,10 +69,14 @@ class VirtualMachine
 
       when Bytecode::JIZ
         if @debug then puts "\tJIZ" end
-        v = @stack.pop()
+        v = @stack.last()
         if v == 0
           addr = fetch()
           @isp = addr
+          if @debug then puts "TRUE" end
+        elsif
+          fetch() #skip jmp marker
+          if @debug then puts "FALSE" end
         end
         
       when Bytecode::TEXT
@@ -120,6 +124,7 @@ class VirtualMachine
         a = @stack.pop()
         b = @stack.pop()
         @stack.push(b-a)
+        if @debug then puts "RES: #{@stack.last()}"end
         
       when Bytecode::MUL
         if @debug then puts "\tMUL" end
@@ -169,6 +174,7 @@ class VirtualMachine
         lower = @stack.pop().to_s(16)
         addr = (upper + lower).to_i(16)
         value = @stack.pop()
+        if @debug then puts "ADDR: #{addr}\nDATA: #{value}"  end
         @memory.load(addr,value)
         
       when Bytecode::FETCH
