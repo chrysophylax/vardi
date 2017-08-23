@@ -101,6 +101,7 @@ class VirtualMachine
         if @debug then puts "\tISWP.*0x#{@instructions[@isp].to_s(16)}<-0x#{@stack.last.to_s(16)}" end
         instr = @instructions[@isp]
         val = @stack.pop()
+        @stack.push(instr)
         @instructions[@isp] = val
         
       when Bytecode::DEC
