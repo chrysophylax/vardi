@@ -17,7 +17,7 @@ module Bytecode
   #stack effects
   SWAP = 2    # 0x02 switcharoo
   RSWP = 34   # 0x22 swap return address and current stack value
-  ISWP = 226  # 0xE2 "evil" swap
+  ISWP = 226  # 0xE2 Swap next instruction and current stack value
   DEC = 4     # 0x04 DEPRECATED: decrease by 1, use CONST, 1, SUB
   ADD = 6     # 0x06 sum top two elements of the stack
   SUB = 8     # 0x08 sub top two elements of the stack
