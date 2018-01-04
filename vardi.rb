@@ -1,5 +1,5 @@
 #!/usr/bin/env ruby
-require "./vm"
+require_relative "vm.rb"
 
 vm = VirtualMachine.new
 vm.start()
