@@ -30,6 +30,8 @@ module Bytecode
   LOAD = 64   # 0x40 pops addr, pops val, puts val in addr
   FETCH = 60  # 0x3C pops addr, fetches val, puts val on stack
  
-  
+  #logical ops
+  AND = 77
+  NOT = 99
 
 end
