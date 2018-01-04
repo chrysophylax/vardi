@@ -1,6 +1,7 @@
 #!/usr/bin/env ruby
-require "./bc"
-require "./m"
+$LOAD_PATH << File.expand_path(File.dirname(__FILE__))
+require "bc"
+require "m"
 
 class VirtualMachine
 
@@ -49,10 +50,10 @@ class VirtualMachine
         print @stack.pop.to_s
 
       when Bytecode::CONS
-        if @debug then puts "\tCONS" end
         a = fetch()
         @stack.push(a)
-
+        if @debug then puts "\tCONS.#{@stack.last.to_s}" end
+        
       when Bytecode::POP
         if @debug then puts "\tPOP" end
         @stack.pop()
@@ -64,7 +65,9 @@ class VirtualMachine
 
       when Bytecode::JMS
         if @debug then puts "\tJMS" end
-        addr = @stack.pop()
+        upper = @stack.pop().to_s(16)
+        lower = @stack.pop().to_s(16)
+        addr = (upper + lower).to_i(16)
         @isp = addr
 
       when Bytecode::JIZ
@@ -83,7 +86,15 @@ class VirtualMachine
         if @debug then puts "\tTEXT.#{@stack.last.chr}" end
         print @stack.pop.chr
         $stdout.flush()
-
+      when Bytecode::AND
+        if @debug then puts "\tAND" end
+      #pop, AND, push
+        a = @stack.pop()
+        b = @stack.pop()
+        c = a & b
+        @stack.push(c)
+        
+      when Bytecode::NOT
       when Bytecode::SWAP
         if @debug then puts "\tSWAP" end
         last = @stack.pop()
@@ -174,7 +185,7 @@ class VirtualMachine
         lower = @stack.pop().to_s(16)
         addr = (upper + lower).to_i(16)
         value = @stack.pop()
-        if @debug then puts "ADDR: #{addr}\nDATA: #{value}"  end
+        if @debug then puts "ADDR: #{addr.to_s.hex}\nDATA: #{value}"  end
         @memory.load(addr,value)
         
       when Bytecode::FETCH
@@ -183,6 +194,7 @@ class VirtualMachine
         lower = @stack.pop().to_s(16)
         addr = (upper + lower).to_i(16)
         value = @memory.fetch(addr)
+        if @debug then puts "ADDR: #{addr.to_s.hex}\nDATA: #{value}" end
         @stack.push(value)
         
       else
@@ -193,7 +205,7 @@ class VirtualMachine
 
       
       # Let us exit even if programmer forgot to 0x1111
-      if @instructions.length <= @isp then @running = false end
+      #if @instructions.length <= @isp then @running = false end
 
     end
     
@@ -207,7 +219,7 @@ class VirtualMachine
   
   def load_file
     file_name = ARGV[0].to_s
-    raise RuntimeError unless File.exist?(file_name) && File.readable?(file_name)
+    raise RuntimeError.new("No file was given.") unless File.exist?(file_name) && File.readable?(file_name)
     file = IO.read(file_name)
     file.each_byte do |byte|
       @instructions << byte.to_i
@@ -233,6 +245,3 @@ class VirtualMachine
 
 
 end
-
-vm = VirtualMachine.new
-vm.start()
