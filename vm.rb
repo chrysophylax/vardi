@@ -1,7 +1,6 @@
 #!/usr/bin/env ruby
-$LOAD_PATH << File.expand_path(File.dirname(__FILE__))
-require "bc"
-require "m"
+require_relative "bc"
+require_relative "m"
 
 class VirtualMachine
 
