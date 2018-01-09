@@ -1,7 +1,7 @@
 class Memory
 
   def initialize()
-    @memory = Array.new(256*256)
+    @memory = Array.new(size=256*256, default=0)
   end
 
   def load(addr, data)
