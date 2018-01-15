@@ -2,7 +2,8 @@ require_relative "bc"
 require_relative "messages"
 require_relative "m"
 require_relative "vm"
-
+require "io/console"
+require "readline"
 module Inspector
 
   def handle_key
