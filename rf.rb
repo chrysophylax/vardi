@@ -77,10 +77,14 @@ module Inspector
   end
   
   def  parse_command(com)
+    puts com
     if (com == ":") then raise RuntimeError.new end
     if (com.start_with?("b"))
       skip_n = Readline.readline("lines?\n: ", true).to_i
       @isp -= skip_n
+    end
+    if (com == "q")
+      self.halt_vm()
     end
     
   end
