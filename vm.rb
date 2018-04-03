@@ -30,7 +30,7 @@ class VirtualMachine
   
   def halt_vm()
     @running = false
-    puts "Halting vardi..."
+    if @debug then puts "Halting vardi..." end
     exit(0)
   end
   def start_vm()
@@ -147,6 +147,7 @@ class VirtualMachine
       if @debug then debug_bytecode_text end
       print @stack.pop.chr
       $stdout.flush()
+
     when Bytecode::AND
       if @debug then debug_bytecode_and end
       #pop, AND, push
@@ -157,6 +158,10 @@ class VirtualMachine
       
     when Bytecode::NOT
       if @debug then debug_bytecode_not end
+      #pop, NOT, push
+      a = @stack.pop()
+      c = ~a
+      @stack.push(c)
       
     when Bytecode::SWAP
       if @debug then debug_bytecode_swap end
