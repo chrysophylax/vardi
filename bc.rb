@@ -32,6 +32,6 @@ module Bytecode
  
   #logical ops
   AND = 77
-  NOT = 99
+  NOT = 93
 
 end
