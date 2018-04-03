@@ -31,6 +31,7 @@ class VirtualMachine
   def halt_vm()
     @running = false
     puts "Halting vardi..."
+    exit(0)
   end
   def start_vm()
     @running = true
