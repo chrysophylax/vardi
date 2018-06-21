@@ -258,7 +258,7 @@ class VirtualMachine
       lower = @stack.pop().to_s(16)
       addr = (upper + lower).to_i(16)
       value = @stack.pop()
-      if @debug then puts "ADDR: #{addr.to_s.hex}\nDATA: #{value}"  end
+      if @debug then puts "ADDR: *0x#{addr.to_s(16).upcase}\nDATA: #{value}"  end
       @memory.load(addr,value)
       
     when Bytecode::FETCH
@@ -267,7 +267,7 @@ class VirtualMachine
       lower = @stack.pop().to_s(16)
       addr = (upper + lower).to_i(16)
       value = @memory.fetch(addr)
-      if @debug then puts "ADDR: #{addr.to_s.hex}\nDATA: #{value}" end
+      if @debug then puts "ADDR: *0x#{addr.to_s(16).upcase}\nDATA: #{value}" end
       @stack.push(value)
       
     else
